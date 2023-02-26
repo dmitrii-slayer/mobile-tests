@@ -1,4 +1,4 @@
-package tests.android.selenide;
+package tests;
 
 import org.junit.jupiter.api.Test;
 
