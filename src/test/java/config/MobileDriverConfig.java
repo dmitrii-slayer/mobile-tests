@@ -2,26 +2,43 @@ package config;
 
 import org.aeonbits.owner.Config;
 
+@Config.LoadPolicy(Config.LoadType.MERGE)
 @Config.Sources({
-        "classpath:android.properties"
+        "system:properties",
+        "classpath:${deviceHost}.properties",
+        "classpath:credentials.properties"
 })
-public interface MobileDriverConfig extends Config{
+public interface MobileDriverConfig extends Config {
 
     @Key("browserstack.user")
-    String getBrowserstackUser();
+    String browserstackUser();
 
     @Key("browserstack.key")
-    String getBrowserstackKey();
+    String browserstackKey();
 
     @Key("Url")
-    String getUrl();
+    String url();
 
     @Key("App")
-    String getApp();
+    String app();
 
     @Key("device.name")
-    String getDeviceName();
+    String deviceName();
 
     @Key("platform.version")
-    String getPlatformVersion();
+    String platformVersion();
+
+    @Key("app.package")
+    String appPackage();
+
+    @Key("app.activity")
+    String appActivity();
+
+    @Key("app.url")
+    String appUrl();
+
+    @Key("app.path")
+    String appPath();
+
+
 }

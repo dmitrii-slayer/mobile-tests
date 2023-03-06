@@ -1,8 +1,10 @@
 package drivers;
 
 import com.codeborne.selenide.WebDriverProvider;
+import config.MobileDriverConfig;
 import io.appium.java_client.android.AndroidDriver;
 import io.appium.java_client.android.options.UiAutomator2Options;
+import org.aeonbits.owner.ConfigFactory;
 import org.openqa.selenium.Capabilities;
 import org.openqa.selenium.WebDriver;
 
@@ -18,9 +20,12 @@ import static org.apache.commons.io.FileUtils.copyInputStreamToFile;
 
 
 public class EmulatorDriver implements WebDriverProvider{
+
+    static MobileDriverConfig emulatorConfig = ConfigFactory.create(MobileDriverConfig.class, System.getProperties());
+
     public static URL getAppiumServerUrl() {
         try {
-            return new URL("http://localhost:4723/wd/hub");
+            return new URL(emulatorConfig.url());
         } catch (MalformedURLException e) {
             throw new RuntimeException(e);
         }
@@ -35,21 +40,20 @@ public class EmulatorDriver implements WebDriverProvider{
 
         options.setAutomationName(ANDROID_UIAUTOMATOR2)
                 .setPlatformName(ANDROID)
-                .setDeviceName("Pixel 4 API 30")
-                .setPlatformVersion("11.0")
+                .setDeviceName(emulatorConfig.deviceName())
+                .setPlatformVersion(emulatorConfig.platformVersion())
 //                .setDeviceName("RFCR90ZMNQP")
 //                .setPlatformVersion("13.0")
                 .setApp(getAppPath())
-                .setAppPackage("org.wikipedia.alpha")
-                .setAppActivity("org.wikipedia.main.MainActivity");
+                .setAppPackage(emulatorConfig.appPackage())
+                .setAppActivity(emulatorConfig.appActivity());
 
         return new AndroidDriver(getAppiumServerUrl(), options);
     }
 
     private String getAppPath() {
-        String appUrl = "https://github.com/wikimedia/apps-android-wikipedia/" +
-                "releases/download/latest/app-alpha-universal-release.apk";
-        String appPath = "src/test/resources/apps/app-alpha-universal-release.apk";
+        String appUrl = emulatorConfig.appUrl();
+        String appPath = emulatorConfig.appPath();
 
         File app = new File(appPath);
         if (!app.exists()) {

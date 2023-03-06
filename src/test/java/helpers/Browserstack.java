@@ -15,7 +15,7 @@ public class Browserstack {
         return given()
                 .log().all()
                 .filter(withCustomTemplates())
-                .auth().basic(mobileConfig.getBrowserstackUser(), mobileConfig.getBrowserstackKey())
+                .auth().basic(mobileConfig.browserstackUser(), mobileConfig.browserstackKey())
                 .when()
                 .get(url)
                 .then()

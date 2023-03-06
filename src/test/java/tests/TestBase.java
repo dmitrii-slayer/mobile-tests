@@ -17,7 +17,16 @@ class TestBase {
     @BeforeAll
     static void beforeAll() {
 //        Configuration.browser = BrowserstackDriver.class.getName();
-        Configuration.browser = EmulatorDriver.class.getName();
+//        Configuration.browser = EmulatorDriver.class.getName();
+        switch (System.getProperty("deviceHost")) {
+            case "android":
+            case "ios":
+                Configuration.browser = BrowserstackDriver.class.getName();
+                break;
+            case "emulator":
+                Configuration.browser = EmulatorDriver.class.getName();
+                break;
+        }
         Configuration.browserSize = null;
     }
 
